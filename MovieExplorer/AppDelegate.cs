@@ -1,4 +1,8 @@
-﻿using Foundation;
+﻿// Copyright Sergio Schirmer Almenara Ribeiro
+// http://github.com/sergioribeiro
+// sergio@sisnet.com.br
+
+using Foundation;
 using UIKit;
 
 namespace MovieExplorer

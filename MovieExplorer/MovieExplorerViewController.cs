@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright Sergio Schirmer Almenara Ribeiro
+// http://github.com/sergioribeiro
+// sergio@sisnet.com.br
+
+using System;
 
 using UIKit;
 using System.Collections.Generic;
@@ -25,7 +29,6 @@ namespace MovieExplorer
 		int VoteCount{ get;}
 		DateTime ReleaseDate{ get;}
 		string Overview{ get;}
-		UIImage Image { get; }
 	}
 
 	public class Movie : IVideo
@@ -55,17 +58,6 @@ namespace MovieExplorer
 		[JsonProperty("overview")]
 		public string Overview{ get; set;}
 
-		public UIImage Image{ 
-			get{
-				//http://image.tmdb.org/t/p/w500/lIv1QinFqz4dlp5U4lQ6HaiskOZ.jpg
-				//"https://image.tmdb.org/t/p/w500/lIv1QinFqz4dlp5U4lQ6HaiskOZ.jpg"
-				return FromUrl("https://image.tmdb.org/t/p/w500/lIv1QinFqz4dlp5U4lQ6HaiskOZ.jpg");
-
-				//UIImage img=FromUrl("https://image.tmdb.org/t/p/w500/"+posterPath);
-				//return img;
-			}
-		}
-
 		public static UIImage FromUrl (string uri)
 		{
 			using (var url = new NSUrl (uri))
@@ -82,7 +74,6 @@ namespace MovieExplorer
 	public partial class MovieExplorerViewController : UICollectionViewController
 	{
 		static NSString videoCellId = new NSString ("VideoCell");
-		static NSString headerId = new NSString ("Header");
 		List<IVideo> videos;
 		List<Movie> movies;
 		string apiUrl;
@@ -92,25 +83,15 @@ namespace MovieExplorer
 			apiUrl = url;
 
 			videos = new List<IVideo> ();
-			movies = new List<Movie> ();
-
-//			for (int i = 0; i < 1; i++) {
-//				videos.Add (new Movie ());
-//			}				
+			movies = new List<Movie> ();		
 		}
 
-		private async void LoadVideos(string url){
-			//string url = @"http://api.wunderground.com/api/02e5dd8c34e3e657/geolookup/conditions/forecast/q/Dhaka,Bangladesh.json";
-
-			//videos.Add (new Movie ());
+		async void LoadVideos(string url){
 			using (var client = new HttpClient())
 			{
 				var result = await client.GetStringAsync(url);
-
 				movies = JsonConvert.DeserializeObject<MovieJson>(result).Movies;
-
 				videos.AddRange (movies);
-				//videos.Add (new Movie ());
 			}
 
 			CollectionView.ReloadData ();
@@ -126,31 +107,24 @@ namespace MovieExplorer
 			LoadVideos (apiUrl);
 
 			CollectionView.RegisterClassForCell (typeof(VideoCell), videoCellId);
-			CollectionView.RegisterClassForSupplementaryView (typeof(Header), UICollectionElementKindSection.Header, headerId);
 			CollectionView.AlwaysBounceHorizontal = true;
-
-			UIMenuController.SharedMenuController.MenuItems = new UIMenuItem[] {
-				new UIMenuItem ("Custom", new Selector ("custom"))
-			};
-
 			CollectionView.BackgroundColor = UIColor.Clear;
-			//CollectionView.BackgroundColor = UIColor.FromWhiteAlpha (.5f, .9f);
 		}
 
-		private void AddPullToRefresh(){
-			UIRefreshControl refreshControl = new UIRefreshControl ();
+		void AddPullToRefresh(){
+			var refreshControl = new UIRefreshControl ();
 			refreshControl.ValueChanged += HandleValueChanged;
 			refreshControl.AddTarget (Self,new Selector("startRefresh"),UIControlEvent.ValueChanged);
 			refreshControl.TintColor = UIColor.Clear;
 
 
-			UIView loadingView = new UIView (refreshControl.Bounds);
+			var loadingView = new UIView (refreshControl.Bounds);
 			loadingView.BackgroundColor = UIColor.Clear;
-			UIImageView backgroundImage = new UIImageView (UIImage.FromBundle ("loading.png"));
+			var backgroundImage = new UIImageView (UIImage.FromBundle ("loading.png"));
 			loadingView.AddSubview (backgroundImage);
 			loadingView.ClipsToBounds = true;
 
-			UIView refreshColorView = new UIView (refreshControl.Bounds);
+			var refreshColorView = new UIView (refreshControl.Bounds);
 			refreshColorView.BackgroundColor = UIColor.Clear;
 			refreshColorView.Alpha = 0.3f;
 
@@ -204,16 +178,9 @@ namespace MovieExplorer
 				}
 		}
 
-		public override UICollectionReusableView GetViewForSupplementaryElement (UICollectionView collectionView, NSString elementKind, NSIndexPath indexPath)
-		{
-			var headerView = (Header)collectionView.DequeueReusableSupplementaryView (elementKind, headerId, indexPath);
-			headerView.Text = "Header";
-			return headerView;
-		}
-
 		public override void ItemHighlighted (UICollectionView collectionView, NSIndexPath indexPath)
 		{
-			VideoCell cell = (VideoCell)collectionView.CellForItem (indexPath);
+			var cell = (VideoCell)collectionView.CellForItem (indexPath);
 			cell.ContentView.BackgroundColor = UIColor.Yellow;
 
 			NavigationController.PushViewController(new VideoDetailViewController(cell.Id), true);
@@ -255,20 +222,6 @@ namespace MovieExplorer
 				return true;
 			}
 		}
-
-//		public override void WillRotate (UIInterfaceOrientation toInterfaceOrientation, double duration)
-//		{
-//			base.WillRotate (toInterfaceOrientation, duration);
-//
-//			var lineLayout = CollectionView.CollectionViewLayout as LineLayout;
-//			if (lineLayout != null)
-//			{
-//				if((toInterfaceOrientation == UIInterfaceOrientation.Portrait) || (toInterfaceOrientation == UIInterfaceOrientation.PortraitUpsideDown))
-//					lineLayout.SectionInset = new UIEdgeInsets (400,0,400,0);
-//				else
-//					lineLayout.SectionInset  = new UIEdgeInsets (220, 0.0f, 200, 0.0f);
-//			}
-//		}
 	}
 
 	public class VideoCell : UICollectionViewCell
@@ -286,11 +239,8 @@ namespace MovieExplorer
 			ContentView.Layer.BorderColor = UIColor.White.CGColor;
 			ContentView.Layer.BorderWidth = 1.0f;
 			ContentView.BackgroundColor = UIColor.White;
-			//ContentView.Transform = CGAffineTransform.MakeScale (0.8f, 0.8f);
 
 			imageView = new UIImageView (UIImage.FromBundle ("0.jpg"));
-			//imageView.Center = ContentView.Center;
-			//imageView.Transform = CGAffineTransform.MakeScale (0.7f, 0.7f);
 
 			ContentView.AddSubview (imageView);
 		}
@@ -324,32 +274,6 @@ namespace MovieExplorer
 				return true;
 			else
 				return false;
-		}
-	}
-
-	public class Header : UICollectionReusableView
-	{
-		UILabel label;
-
-		public string Text {
-			get {
-				return label.Text;
-			}
-			set {
-				label.Text = value;
-				SetNeedsDisplay ();
-			}
-		}
-
-		[Export ("initWithFrame:")]
-		public Header (CGRect frame) : base (frame)
-		{
-			label = new UILabel (){
-				Frame = new CGRect (20,0,200,30), 
-				TextColor = UIColor.White
-				//BackgroundColor = UIColor.Yellow
-			};
-			AddSubview (label);
 		}
 	}
 }

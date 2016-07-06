@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleName</key>
-	<string>MovieExplorer</string>
+	<string>Movie Explorer</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.sisnet.movieexplorer</string>
 	<key>CFBundleShortVersionString</key>

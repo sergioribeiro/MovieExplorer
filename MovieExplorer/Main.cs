@@ -1,4 +1,8 @@
-﻿using UIKit;
+﻿// Copyright Sergio Schirmer Almenara Ribeiro
+// http://github.com/sergioribeiro
+// sergio@sisnet.com.br
+
+using UIKit;
 
 namespace MovieExplorer
 {
