@@ -25,6 +25,15 @@ namespace MovieExplorer
 			Xamarin.Calabash.Start();
 			#endif
 
+			Window = new UIWindow(UIScreen.MainScreen.Bounds);
+					
+			var navController = new UINavigationController(new HomeViewController());
+
+			navController.NavigationBar.BarTintColor = UIColor.FromRGB(50,51,52);
+			navController.NavigationBar.TintColor = UIColor.FromRGB(221,156,46);
+			Window.RootViewController = navController;
+			Window.MakeKeyAndVisible ();
+
 			return true;
 		}
 
