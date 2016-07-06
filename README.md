@@ -5,6 +5,12 @@ Requirements and Endpoints are CIE's property (http://www.ciedigital.com) and sh
 
 All of the Source Code in this Repo was created by Sergio Schirmer Almenara Ribeiro
 
+# Home screen
+![Home Screen](https://raw.githubusercontent.com/sergioribeiro/MovieExplorer/master/MovieExplorer/Resources/HomeScreen.PNG)
+
+# Video details screen
+![Video Screen](https://raw.githubusercontent.com/sergioribeiro/MovieExplorer/master/MovieExplorer/Resources/VideoScreen.PNG)
+
 # Future Improvements
 1) Implement the search bar
 
