@@ -33,3 +33,7 @@ All of the Source Code in this Repo was created by Sergio Schirmer Almenara Ribe
 10)Implement the unit tests
 
 11)Refactor
+
+12)Create the App's icon
+
+13)Improve the exception handling
